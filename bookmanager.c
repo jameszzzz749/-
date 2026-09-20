@@ -1,4 +1,6 @@
 #include "bookmanager.h"
+#include "Book.h"
+
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -80,7 +82,12 @@ int bookManager_menu()
 
 void boolManager_add(BookManager* pthis)
 {
-	printf("add\n");
+	Book* book = book_alloc();
+	printf("输入图书(ID 书名 作者 价格)");
+	scanf("%11u %s %s %f", &book->id, book->name, book->author, &book->price);
+	
+	book_print(book);
+	book_free(book);
 }
 void boolManager_find(BookManager* pthis)
 {
