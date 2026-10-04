@@ -1,41 +1,52 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
-#include <cstdlib>
 #include "library.h"
 using namespace std;
 
 int main()
 {
-    system("chcp 936 >nul");  // VS¿ØÖÆÌ¨¼òÌåÖÐÎÄGBK£¬½â¾öÂÒÂë
-    loadData();
+    // åˆ›å»ºå›¾ä¹¦é¦†å¯¹è±¡
+    Library lib;
     int choice;
 
     while (true)
     {
-        showMenu();
-        cout << "ÇëÊäÈëÄúµÄÑ¡Ôñ£º";
+        lib.showMenu();
         cin >> choice;
-
         switch (choice)
         {
-        case 1: addBook(); break;
-        case 2: showAllBooks(); break;
-        case 3: modifyBook(); break;
-        case 4: deleteBook(); break;
-        case 5: borrowBook(); break;
-        case 6: returnBook(); break;
+        case 1:
+            lib.addBook();
+            break;
+        case 2:
+            lib.showAllBooks();
+            break;
+        case 3:
+            lib.modifyBook();
+            break;
+        case 4:
+            lib.deleteBook();
+            break;
+        case 5:
+            lib.borrowBook();
+            break;
+        case 6:
+            lib.returnBook();
+            break;
         case 7:
-            saveData();
-            cout << "Êý¾ÝÒÑ±£´æ£¬¸ÐÐ»Ê¹ÓÃÍ¼Êé¹Ý¹ÜÀíÏµÍ³£¡\n";
+            lib.loadData();
+            break;
+        case 8:
+            lib.saveData();
+            break;
+        case 0:
+            cout << "ç³»ç»Ÿé€€å‡ºï¼Œå†è§ï¼" << endl;
             return 0;
         default:
-            cout << "ÊäÈëÎÞÐ§£¬ÇëÖØÐÂÑ¡Ôñ£¡\n";
+            cout << "è¾“å…¥é€‰é¡¹æ— æ•ˆï¼Œè¯·é‡æ–°è¾“å…¥ï¼" << endl;
         }
-
-        cout << "\n°´»Ø³µ¼ü¼ÌÐø...";
+        cout << "\næŒ‰å›žè½¦ç»§ç»­...";
         cin.get();
         cin.get();
-        system("cls");
     }
     return 0;
 }
