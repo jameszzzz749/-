@@ -5,14 +5,68 @@
 #include "library.h"
 using namespace std;
 
-static Book books[MAX_BOOKS];
-static int bookCount = 0;
+// BookÁ±ªÊàêÂëòÂáΩÊï∞ÂÆûÁé∞
+void Book::setInfo(int id_, const char* name_, const char* author_, int total_, int available_)
+{
+    id = id_;
+    strcpy(name, name_);
+    strcpy(author, author_);
+    total = total_;
+    available = available_;
+}
 
-int findBookById(int id)
+int Book::getId()
+{
+    return id;
+}
+char* Book::getName()
+{
+    return name;
+}
+char* Book::getAuthor()
+{
+    return author;
+}
+int Book::getTotal()
+{
+    return total;
+}
+int Book::getAvailable()
+{
+    return available;
+}
+void Book::setAvailable(int num)
+{
+    available = num;
+}
+
+// LibraryÁ±ªÂÆûÁé∞
+Library::Library()
+{
+    bookCount = 0;
+}
+
+void Library::showMenu()
+{
+    cout << "\n=====Âõæ‰π¶ÁÆ°ÁêÜÁ≥ªÁªü=====" << endl;
+    cout << "1.Êñ∞Â¢ûÂõæ‰π¶" << endl;
+    cout << "2.ÊòæÁ§∫ÊâÄÊúâÂõæ‰π¶" << endl;
+    cout << "3.‰øÆÊîπÂõæ‰π¶" << endl;
+    cout << "4.Âà†Èô§Âõæ‰π¶" << endl;
+    cout << "5.ÂÄü‰π¶" << endl;
+    cout << "6.Ëøò‰π¶" << endl;
+    cout << "7.Âä†ËΩΩÊï∞ÊçÆ" << endl;
+    cout << "8.‰øùÂ≠òÊï∞ÊçÆ" << endl;
+    cout << "0.ÈÄÄÂá∫Á≥ªÁªü" << endl;
+    cout << "======================" << endl;
+    cout << "ËØ∑ËæìÂÖ•ÈÄâÊã©Ôºö";
+}
+
+int Library::findBookById(int id)
 {
     for (int i = 0; i < bookCount; i++)
     {
-        if (books[i].id == id)
+        if (books[i].getId() == id)
         {
             return i;
         }
@@ -20,196 +74,149 @@ int findBookById(int id)
     return -1;
 }
 
-void showMenu()
-{
-    cout << "========== Õº Èπ›π‹¿ÌœµÕ≥ ==========\n";
-    cout << "          1. ÃÌº”Õº È\n";
-    cout << "          2. œ‘ æÀ˘”–Õº È\n";
-    cout << "          3. –ﬁ∏ƒÕº È–≈œ¢\n";
-    cout << "          4. …æ≥˝Õº È\n";
-    cout << "          5. ΩË È\n";
-    cout << "          6. ªπ È\n";
-    cout << "          7. ÕÀ≥ˆœµÕ≥\n";
-    cout << "====================================\n";
-}
-
-void addBook()
+void Library::addBook()
 {
     if (bookCount >= MAX_BOOKS)
     {
-        cout << "Õº Èø‚“—¬˙£¨Œﬁ∑®ÃÌº”∏¸∂‡Õº È£°\n";
+        cout << "Âõæ‰π¶Êï∞ÈáèÂ∑≤Ëææ‰∏äÈôêÔºÅ" << endl;
         return;
     }
-
-    Book b;
-    cout << "«Î ‰»ÎÕº È±‡∫≈£∫";
-    cin >> b.id;
-
-    if (findBookById(b.id) != -1)
-    {
-        cout << "∏√±‡∫≈µƒÕº È“—¥Ê‘⁄£°\n";
-        return;
-    }
-
-    cout << "«Î ‰»Î È√˚£∫";
-    cin >> b.name;
-    cout << "«Î ‰»Î◊˜’ﬂ£∫";
-    cin >> b.author;
-    cout << "«Î ‰»Î◊‹ ˝¡ø£∫";
-    cin >> b.total;
-    b.available = b.total;
-
-    books[bookCount++] = b;
-    saveData();
-    cout << "Õº ÈÃÌº”≥…π¶£°\n";
+    int id, total;
+    char name[50], author[30];
+    cout << "ËæìÂÖ•Âõæ‰π¶IDÔºö";
+    cin >> id;
+    cout << "ËæìÂÖ•‰π¶ÂêçÔºö";
+    cin >> name;
+    cout << "ËæìÂÖ•‰ΩúËÄÖÔºö";
+    cin >> author;
+    cout << "ËæìÂÖ•Âõæ‰π¶ÊÄªÊï∞ÈáèÔºö";
+    cin >> total;
+    books[bookCount].setInfo(id, name, author, total, total);
+    bookCount++;
+    cout << "Âõæ‰π¶Ê∑ªÂä†ÊàêÂäüÔºÅ" << endl;
 }
 
-void showAllBooks()
+void Library::showAllBooks()
 {
-    if (bookCount == 0)
-    {
-        cout << "µ±«∞ Èø‚‘›ŒﬁÕº È£°\n";
-        return;
-    }
-
-    cout << "\n±‡∫≈\t È√˚\t\t◊˜’ﬂ\t◊‹ ˝\tø…ΩË\n";
-    cout << "---------------------------------------------\n";
+    cout << "\nID\t‰π¶Âêç\t‰ΩúËÄÖ\tÊÄªÊï∞\tÂèØÂÄü" << endl;
     for (int i = 0; i < bookCount; i++)
     {
-        cout << books[i].id << "\t"
-            << books[i].name << "\t\t"
-            << books[i].author << "\t"
-            << books[i].total << "\t"
-            << books[i].available << endl;
+        cout << books[i].getId() << "\t"
+            << books[i].getName() << "\t"
+            << books[i].getAuthor() << "\t"
+            << books[i].getTotal() << "\t"
+            << books[i].getAvailable() << endl;
     }
 }
 
-void modifyBook()
+void Library::modifyBook()
 {
     int id;
-    cout << "«Î ‰»Î“™–ﬁ∏ƒµƒÕº È±‡∫≈£∫";
+    cout << "ËæìÂÖ•Ë¶Å‰øÆÊîπÂõæ‰π¶IDÔºö";
     cin >> id;
-
-    int index = findBookById(id);
-    if (index == -1)
+    int pos = findBookById(id);
+    if (pos == -1)
     {
-        cout << "Œ¥’“µΩ∂‘”¶±‡∫≈µƒÕº È£°\n";
+        cout << "Êú™ÊâæÂà∞ËØ•Âõæ‰π¶ÔºÅ" << endl;
         return;
     }
-
-    cout << "µ±«∞–≈œ¢£∫ È√˚=" << books[index].name
-        << "  ◊˜’ﬂ=" << books[index].author
-        << "  ◊‹ ˝=" << books[index].total << endl;
-
-    cout << "«Î ‰»Î–¬ È√˚£∫";
-    cin >> books[index].name;
-    cout << "«Î ‰»Î–¬◊˜’ﬂ£∫";
-    cin >> books[index].author;
-    cout << "«Î ‰»Î–¬◊‹ ˝¡ø£∫";
-    cin >> books[index].total;
-
-    if (books[index].available > books[index].total)
-    {
-        books[index].available = books[index].total;
-    }
-    saveData();
-    cout << "Õº È–≈œ¢–ﬁ∏ƒ≥…π¶£°\n";
+    char name[50], author[30];
+    int total;
+    cout << "ËæìÂÖ•Êñ∞‰π¶ÂêçÔºö";
+    cin >> name;
+    cout << "ËæìÂÖ•Êñ∞‰ΩúËÄÖÔºö";
+    cin >> author;
+    cout << "ËæìÂÖ•Êñ∞ÊÄªÊï∞Ôºö";
+    cin >> total;
+    books[pos].setInfo(id, name, author, total, books[pos].getAvailable());
+    cout << "‰øÆÊîπÊàêÂäüÔºÅ" << endl;
 }
 
-void deleteBook()
+void Library::deleteBook()
 {
     int id;
-    cout << "«Î ‰»Î“™…æ≥˝µƒÕº È±‡∫≈£∫";
+    cout << "ËæìÂÖ•Ë¶ÅÂà†Èô§Âõæ‰π¶IDÔºö";
     cin >> id;
-
-    int index = findBookById(id);
-    if (index == -1)
+    int pos = findBookById(id);
+    if (pos == -1)
     {
-        cout << "Œ¥’“µΩ∂‘”¶±‡∫≈µƒÕº È£°\n";
+        cout << "Âõæ‰π¶‰∏çÂ≠òÂú®ÔºÅ" << endl;
         return;
     }
-
-    //  ˝◊È«∞“∆∏≤∏«
-    for (int i = index; i < bookCount - 1; i++)
+    //ÂêéÈù¢Âõæ‰π¶ÂâçÁßªË¶ÜÁõñ
+    for (int i = pos; i < bookCount - 1; i++)
     {
         books[i] = books[i + 1];
     }
     bookCount--;
-    saveData();
-    cout << "Õº È…æ≥˝≥…π¶£°\n";
+    cout << "Âà†Èô§ÊàêÂäüÔºÅ" << endl;
 }
 
-void borrowBook()
+void Library::borrowBook()
 {
     int id;
-    cout << "«Î ‰»Î“™ΩË‘ƒµƒÕº È±‡∫≈£∫";
+    cout << "ËæìÂÖ•ÂÄü‰π¶IDÔºö";
     cin >> id;
-
-    int index = findBookById(id);
-    if (index == -1)
+    int pos = findBookById(id);
+    if (pos == -1)
     {
-        cout << "Œ¥’“µΩ∂‘”¶±‡∫≈µƒÕº È£°\n";
+        cout << "Âõæ‰π¶‰∏çÂ≠òÂú®ÔºÅ" << endl;
         return;
     }
-
-    if (books[index].available <= 0)
+    if (books[pos].getAvailable() <= 0)
     {
-        cout << "±ß«∏£¨∏√ È“—»´≤øΩË≥ˆ£¨‘›Œﬁø‚¥Ê£°\n";
+        cout << "ÊöÇÊó†ÂèØÂÄüÂõæ‰π¶ÔºÅ" << endl;
         return;
     }
-
-    books[index].available--;
-    saveData();
-    cout << "ΩË È≥…π¶£°°∂" << books[index].name << "°∑ £”‡ø…ΩË " << books[index].available << " ±æ\n";
+    books[pos].setAvailable(books[pos].getAvailable() - 1);
+    cout << "ÂÄü‰π¶ÊàêÂäüÔºÅ" << endl;
 }
 
-void returnBook()
+void Library::returnBook()
 {
     int id;
-    cout << "«Î ‰»Î“™πÈªπµƒÕº È±‡∫≈£∫";
+    cout << "ËæìÂÖ•Ëøò‰π¶IDÔºö";
     cin >> id;
-
-    int index = findBookById(id);
-    if (index == -1)
+    int pos = findBookById(id);
+    if (pos == -1)
     {
-        cout << "Œ¥’“µΩ∂‘”¶±‡∫≈µƒÕº È£°\n";
+        cout << "Âõæ‰π¶‰∏çÂ≠òÂú®ÔºÅ" << endl;
         return;
     }
-
-    if (books[index].available >= books[index].total)
+    if (books[pos].getAvailable() >= books[pos].getTotal())
     {
-        cout << "∏√ È“—»´≤øπÈªπ£¨Œﬁ–Ë÷ÿ∏¥≤Ÿ◊˜£°\n";
+        cout << "Êó†ÈúÄËøò‰π¶ÔºÅ" << endl;
         return;
     }
-
-    books[index].available++;
-    saveData();
-    cout << "ªπ È≥…π¶£°°∂" << books[index].name << "°∑µ±«∞ø…ΩË " << books[index].available << " ±æ\n";
+    books[pos].setAvailable(books[pos].getAvailable() + 1);
+    cout << "Ëøò‰π¶ÊàêÂäüÔºÅ" << endl;
 }
 
-// ±£¥Ê∂˛Ω¯÷∆Œƒº˛
-void saveData()
+void Library::loadData()
 {
-    ofstream ofs(DATA_FILE, ios::binary);
-    if (!ofs.is_open())
+    ifstream fin(DATA_FILE, ios::binary);
+    if (!fin.is_open())
     {
-        cout << "±£¥Ê ˝æ›Œƒº˛ ß∞‹£°\n";
+        cout << "ÊâìÂºÄÊñá‰ª∂Â§±Ë¥•ÔºÅ" << endl;
         return;
     }
-    ofs.write((char*)&bookCount, sizeof(int));
-    ofs.write((char*)books, sizeof(Book) * bookCount);
-    ofs.close();
+    fin.read((char*)&bookCount, sizeof(int));
+    fin.read((char*)books, sizeof(Book) * bookCount);
+    fin.close();
+    cout << "Êï∞ÊçÆÂä†ËΩΩÂÆåÊàêÔºÅ" << endl;
 }
 
-// º”‘ÿ∂˛Ω¯÷∆Œƒº˛
-void loadData()
+void Library::saveData()
 {
-    ifstream ifs(DATA_FILE, ios::binary);
-    if (!ifs.is_open())
+    ofstream fout(DATA_FILE, ios::binary);
+    if (!fout.is_open())
     {
+        cout << "Êñá‰ª∂ÊâìÂºÄÂ§±Ë¥•ÔºÅ" << endl;
         return;
     }
-    ifs.read((char*)&bookCount, sizeof(int));
-    ifs.read((char*)books, sizeof(Book) * bookCount);
-    ifs.close();
+    fout.write((char*)&bookCount, sizeof(int));
+    fout.write((char*)books, sizeof(Book) * bookCount);
+    fout.close();
+    cout << "‰øùÂ≠òÊàêÂäüÔºÅ" << endl;
 }
+
