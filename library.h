@@ -1,31 +1,49 @@
 #ifndef LIBRARY_H
 #define LIBRARY_H
-
 #define MAX_BOOKS 100
 #define DATA_FILE "library.dat"
+#include <cstring>
+#include <fstream>
 
-// Í¼Êé½á¹¹Ìå
-struct Book
+// å›¾ä¹¦ç±» Book
+class Book
 {
+private:
     int id;
     char name[50];
     char author[30];
     int total;
     int available;
+public:
+    // è®¾ç½®å›¾ä¹¦ä¿¡æ¯
+    void setInfo(int id_, const char* name_, const char* author_, int total_, int available_);
+    // è·å–æˆå‘˜
+    int getId();
+    char* getName();
+    char* getAuthor();
+    int getTotal();
+    int getAvailable();
+    void setAvailable(int num);
 };
 
-// º¯ÊıÉùÃ÷
-void showMenu();
-void addBook();
-void showAllBooks();
-void modifyBook();
-void deleteBook();
-void borrowBook();
-void returnBook();
-void loadData();
-void saveData();
-
-// ¸¨Öúº¯Êı
-int findBookById(int id);
+// å›¾ä¹¦é¦†ç®¡ç†ç±» Library
+class Library
+{
+private:
+    Book books[MAX_BOOKS];
+    int bookCount;
+public:
+    Library();  //æ„é€ å‡½æ•°
+    void showMenu();
+    void addBook();
+    void showAllBooks();
+    void modifyBook();
+    void deleteBook();
+    void borrowBook();
+    void returnBook();
+    void loadData();
+    void saveData();
+    int findBookById(int id);
+};
 
 #endif
